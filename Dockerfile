@@ -1,15 +1,14 @@
-FROM debian:jessie
-MAINTAINER Albert Dixon <albert.dixon@schange.com>
+FROM alpine:3.2
+MAINTAINER Albert Dixon <albert@dixon.rocks>
 
-ENV DEBIAN_FRONTEND noninteractive
+ADD https://download-cdn.getsync.com/stable/linux-x64/BitTorrent-Sync_x64.tar.gz /sync.tgz
+RUN tar -xvzf /sync.tgz -C /usr/local/bin btsync \
+    && rm -vf /sync.tgz
 
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends curl
-RUN curl -#kL https://download-cdn.getsyncapp.com/stable/linux-x64/BitTorrent-Sync_x64.tar.gz |\
-    tar xvz -C /usr/local/bin
-
-RUN curl -#kL https://github.com/albertrdixon/tmplnator/releases/download/v2.1.0/tnator-linux-amd64.tar.gz |\
-    tar xvz -C /usr/local/bin
+ADD https://github.com/albertrdixon/tmplnator/releases/download/v2.2.0/t2-linux.tgz /t2.tgz
+RUN tar -xvzf /t2.tgz -C /usr/local bin/t2-linux \
+    && ln -vs /usr/local/bin/t2-linux /usr/local/bin/t2 \
+    && rm -vf /t2.tgz
 
 ADD configs /templates
 ADD scripts/* /usr/local/bin/
@@ -17,7 +16,7 @@ RUN chmod a+rx /usr/local/bin/* &&\
     mkdir -p /data
 
 ENTRYPOINT ["docker-entry"]
-CMD ["bash"]
+CMD ["docker-start"]
 
 EXPOSE 8888 55555
 ENV UI_PORT     8888

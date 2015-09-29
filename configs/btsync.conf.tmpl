@@ -1,16 +1,19 @@
 { 
-  "device_name": "{{ default .Env.DEVICE_NAME "docker btsync" }}",
-  "listening_port" : {{ default .Env.LISTEN_PORT 55555 }},
-  "storage_path" : "/data",
+  "device_name": "{{ def .Env.DEVICE_NAME "docker btsync" }}",
+  "listening_port" : {{ def .Env.LISTEN_PORT 55555 }},
+  "storage_path" : "/sync",
   "check_for_updates" : true, 
-  "use_upnp" : true,
+  "use_upnp" : false,
   "download_limit" : 0,                       
   "upload_limit" : 0, 
   "webui" :
   {
-    "listen" : "0.0.0.0:{{ default .Env.UI_PORT "8888" }}",
-    "login" : "{{ default .Env.USERNAME "admin" }}",
-    "password" : "{{ default .Env.PASSWORD "admin" }}"
+    "listen" : "0.0.0.0:{{ def .Env.UI_PORT "8888" }}",
+    "login" : "{{ def .Env.USERNAME "admin" }}",
+    "password" : "{{ def .Env.PASSWORD "admin" }}",
+    "allow_empty_password" : false,
+    "directory_root" : "/data",
+    "directory_root_policy" : "belowroot",
   }
 }
-{{ path "/btsync" }}
+{{ path "/" }}
