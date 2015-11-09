@@ -5,6 +5,12 @@ echo "**** Starting btsync (https://www.btsync.com/) container. Enjoy! ****"
 [ -n "$OPEN_FILE_LIMIT" ] &&\
   ulimit -n $OPEN_FILE_LIMIT
 
+# magically renumber the nobody user
+sed -i "s|nobody:x:65534:65534:|nobody:x:$USERID:$GROUPID:|" /etc/passwd
+sed -i "s|nobody:x:65534:|nobody:x:$GROUPID:|" /etc/group
+
 t2 /templates
+
+chown nobody:nobody /btsync.conf
 exec $*
 exit 0

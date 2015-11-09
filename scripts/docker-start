@@ -2,5 +2,8 @@
 set -eo pipefail
 
 [ -d /sync ] || mkdir -vp /sync
-exec "btsync" "--config" "/btsync.conf" "--log" "--nodaemon"
+chown -R nobody:nobody /sync
+
+exec gosu nobody:nobody \
+  /usr/local/bin/btsync --nodaemon --config /btsync.conf --log /dev/stdout
 exit 0
