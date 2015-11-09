@@ -5,10 +5,8 @@ ADD https://download-cdn.getsync.com/stable/linux-x64/BitTorrent-Sync_x64.tar.gz
 RUN tar -xvzf /sync.tgz -C /usr/local/bin btsync \
     && rm -vf /sync.tgz
 
-ADD https://github.com/albertrdixon/tmplnator/releases/download/v2.2.0/t2-linux.tgz /t2.tgz
-RUN tar -xvzf /t2.tgz -C /usr/local bin/t2-linux \
-    && ln -vs /usr/local/bin/t2-linux /usr/local/bin/t2 \
-    && rm -vf /t2.tgz
+ADD https://github.com/albertrdixon/tmplnator/releases/download/v2.2.1/t2-linux.tgz /t2.tgz
+RUN tar -xvzf /t2.tgz -C /usr/local/bin && rm -vf /t2.tgz
 
 ADD configs /templates
 ADD scripts/* /usr/local/bin/
